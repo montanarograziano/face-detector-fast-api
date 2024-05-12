@@ -1,0 +1,41 @@
+[project]
+name = "face-detector"
+version = "0.1.0"
+description = "Add your description here"
+authors = [
+    { name = "grazianom-tuidi", email = "graziano.montanaro@tuidi.it" }
+]
+dependencies = [
+
+    "qdrant-client>=1.9.1",
+    "transformers>=4.40.2",
+    "datasets>=2.19.1",
+    "torch>=2.3.0",
+    "python-dotenv>=1.0.1",
+    "polars>=0.20.25",
+    "numpy>=1.26.4",
+]
+readme = "README.md"
+requires-python = "~= 3.10"
+license = { text = "MIT" }
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.rye]
+managed = true
+dev-dependencies = [
+    "ipykernel>=6.29.4",
+    "jupyter>=1.0.0",
+    "loguru>=0.7.2",
+    "pillow>=10.3.0",
+    "p-tqdm>=1.4.0",
+    "ruff>=0.4.4",
+]
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/face_detector_fast_api"]
