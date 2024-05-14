@@ -13,6 +13,7 @@ from db import (
 from model import get_model
 from p_tqdm import p_umap
 from PIL import Image
+from pathlib import Path
 
 client = create_client()
 
@@ -26,7 +27,7 @@ device = torch.device(
 model = get_model(MODEL_NAME)
 
 # Tune sample size accordingly to your need
-images = list(DATA_DIR.rglob("*.jpg"))[:SAMPLE_SIZE]
+images: list[Path] = list(DATA_DIR.rglob("*.jpg"))[:SAMPLE_SIZE]
 image_names, image_files = zip(*p_umap(process_image, images))
 images_df = pl.DataFrame({"Image": image_files, "Name": image_names})
 embeddings = get_embeddings(images, images_df)
@@ -37,4 +38,4 @@ save_embeddings(client, SAMPLE_SIZE, embeddings, payload)
 # Sample Image
 img = Image.open(images[0])
 results = search_image(img, model, client)
-visualize_images(results)
+visualize_images(results, images)

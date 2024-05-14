@@ -24,8 +24,9 @@ def create_client() -> QdrantClient:
         url=QDRANT_URL,
         api_key=QDRANT_API_KEY,
     )
-
-    if client.get_collection(collection_name=COLLECTION_NAME):
+    if COLLECTION_NAME in list(
+        map(lambda x: x.name, client.get_collections().collections)
+    ):
         logger.info("Collection already exists. Skip creating.")
     else:
         logger.info(f"Creating collection {COLLECTION_NAME}")
@@ -90,7 +91,7 @@ def save_embeddings(
     client.scroll(collection_name=COLLECTION_NAME, limit=10)
 
 
-def visualize_images(results, images, top_k=2):
+def visualize_images(results: list[ScoredPoint], images: list[Path], top_k: int = 2):
     for i in range(top_k):
         image_id = results[i].payload["image_id"]
         name = results[i].payload["name"]
